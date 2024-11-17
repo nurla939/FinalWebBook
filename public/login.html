@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8d7da; /* Светло-красный фон */
+            color: #721c24; /* Темно-красный текст */
+            font-family: 'Arial', sans-serif;
+        }
+        .navbar-light.bg-light {
+            background-color: #a81e2b !important; /* Светлый фон */
+            border-bottom: 2px solid #ccc; /* Лёгкая граница снизу */
+        }
+        .navbar {
+            background-color: #c82333; /* Красный */
+        }
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+        .nav-link:hover {
+            color: #f8d7da !important;
+        }
+        .btn-primary {
+            background-color: #c82333;
+            border-color: #c82333;
+        }
+        .btn-primary:hover {
+            background-color: #a71d2a;
+            border-color: #a71d2a;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .container-fluid {
+            background-color: #a81e2b !important;
+        }
+
+        .modal-content {
+            background-color: #f8d7da;
+            border: 1px solid #c82333;
+        }
+        .form-control {
+            border: 1px solid #c82333;
+        }
+        .form-control:focus {
+            border-color: #a71d2a;
+            box-shadow: 0 0 5px rgba(199, 35, 51, 0.5);
+        }
+        footer {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #c82333;
+            color: #fff;
+        }
+        .btn-success {
+            background-color: #28a745;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .book {
+            border: 1px solid #c82333;
+            border-radius: 5px;
+            padding: 15px;
+            background-color: #ffffff;
+        }
+        .book-title {
+            color: #c82333;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Library</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="register.html">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="login.html">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">books</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="news.html">News</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="book p-4 shadow" style="width: 100%; max-width: 400px;">
+        <h3 class="book-title text-center">Login</h3>
+        <form id="loginForm" onsubmit="login(event)">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" class="form-control" placeholder="Enter username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="Enter password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="register.html" class="text-decoration-none">Don't have an account? Register</a>
+        </div>
+    </div>
+</div>
+<footer class="text-center mt-4">Kaiyruly Amir BDA-2302</footer>
+<script>
+    async function login(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                localStorage.setItem('token', data.token);
+                alert('Login successful!');
+                window.location.href = 'index.html';
+            } else {
+                alert(`Login failed: ${data.error}`);
+            }
+        } catch (error) {
+            alert(`Error: ${error.message}`);
+        }
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
